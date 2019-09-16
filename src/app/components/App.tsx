@@ -26,12 +26,11 @@ const App = ({}) => {
 
   function ListItem(props) {
     const node = props.node;
-
     let childNodes = null;
-    // let childArray = new Array;
 
     // The component calls itself if there are children
     if (node.children) {
+      let childArray = new Array();
       node.children.forEach(child => {
         // Pass the plugin the ID of the layer we want to fetch.
         parent.postMessage(
@@ -46,17 +45,18 @@ const App = ({}) => {
 
             if (type === "fetched layer") {
               console.log(layerData);
+              childArray.push(layerData);
+              console.log(childArray);
+              console.log("check");
             }
           };
         }, []);
       });
 
-      // childNodes = childArray.map(function(childNode) {
-      //   console.log(childNode);
-      //   return (
-      //     <ListItem key={childNode.id} node={childNode} />
-      //   );
-      // });
+      childNodes = childArray.map(function(childNode) {
+        console.log(childNode);
+        return <ListItem key={childNode.id} node={childNode} />;
+      });
     }
 
     return (
