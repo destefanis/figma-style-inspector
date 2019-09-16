@@ -31,6 +31,7 @@ const App = ({}) => {
     // The component calls itself if there are children
     if (node.children) {
       let childArray = new Array();
+
       node.children.forEach(child => {
         // Pass the plugin the ID of the layer we want to fetch.
         parent.postMessage(
@@ -44,10 +45,8 @@ const App = ({}) => {
             const { type, layerData } = event.data.pluginMessage;
 
             if (type === "fetched layer") {
-              console.log(layerData);
               childArray.push(layerData);
               console.log(childArray);
-              console.log("check");
             }
           };
         }, []);
