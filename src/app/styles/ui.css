@@ -52,14 +52,26 @@ input {
   flex-flow: row;
   align-items: center;
   justify-content: flex-start;
+  border: 1px solid transparent;
+  transition: border-color 100ms ease;
+  cursor: pointer;
+}
+
+.list-flex-row:hover {
+  border-color: #18a0fb;
+}
+
+.list-flex-row:hover .list-icon {
+  /* opacity: 1; */
 }
 
 .list-icon {
   text-align: center;
   width: 16px;
+  opacity: 0.6;
 }
 
-.list-icon svg {
+.list-icon img {
   height: 12px;
   width: 12px;
 }
@@ -77,7 +89,15 @@ input {
   padding: 0 24px;
 }
 
-.is-hidden {
+.sub-list .list-flex-row {
+  /* padding: 0 24px; */
+}
+
+.frame {
+  font-weight: 600;
+}
+
+.is-hidden ul {
   display: none;
 }
 

@@ -6,6 +6,7 @@ declare function require(path: string): any;
 
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
+  const [menuActive, setMenuState] = useState(false);
 
   const onRunLoop = React.useCallback(() => {
     parent.postMessage({ pluginMessage: { type: "run-app" } }, "*");
@@ -53,7 +54,11 @@ const App = ({}) => {
     }
 
     return (
-      <li className="list-item">
+      <li
+        id={node.id}
+        className={`list-item ${menuActive ? "" : "is-hidden"}`}
+        onClick={() => setMenuState(!menuActive)}
+      >
         <div className="list-flex-row">
           <span className="list-arrow"></span>
           <span className="list-icon">
