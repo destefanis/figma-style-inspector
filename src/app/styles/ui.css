@@ -26,10 +26,12 @@ input {
   padding: 8px;
 }
 
-ul {
+.list {
   margin: 0;
   padding: 0;
-  max-height: 500px;
+  -webkit-padding-start: 0;
+  height: 100%;
+  width: 100%;
   overflow: scroll;
 }
 
@@ -39,8 +41,12 @@ ul {
 }
 
 .list-item {
+  width: 100%;
   list-style: none;
   padding: 0;
+}
+
+.list-flex-row {
   height: 32px;
   display: flex;
   flex-flow: row;
@@ -62,6 +68,17 @@ ul {
   margin: 0 8px;
   font-size: 12px;
   font-family: sans-serif;
+}
+
+.sub-list {
+  width: 100%;
+  margin: 0;
+  -webkit-padding-start: 0;
+  padding: 0 24px;
+}
+
+.is-hidden {
+  display: none;
 }
 
 input:hover {

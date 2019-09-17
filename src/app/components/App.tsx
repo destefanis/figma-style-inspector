@@ -19,56 +19,11 @@ const App = ({}) => {
 
       // Plugin code returns this message after finished a loop.
       if (type === "complete") {
-        setNodeAarray(message);
+        // The data received is serialized so we need to parse it before use.
+        setNodeAarray(JSON.parse(message));
       }
     };
   }, []);
-
-  function ListItem(props) {
-    const node = props.node;
-    let childNodes = null;
-
-    // The component calls itself if there are children
-    if (node.children) {
-      let childArray = new Array();
-
-      node.children.forEach(child => {
-        // Pass the plugin the ID of the layer we want to fetch.
-        parent.postMessage(
-          { pluginMessage: { type: "fetch-layer-data", id: child.id } },
-          "*"
-        );
-
-        // Communicate with the plugin UI.
-        React.useEffect(() => {
-          window.onmessage = event => {
-            const { type, layerData } = event.data.pluginMessage;
-
-            if (type === "fetched layer") {
-              childArray.push(layerData);
-              console.log(childArray);
-            }
-          };
-        }, []);
-      });
-
-      childNodes = childArray.map(function(childNode) {
-        console.log(childNode);
-        return <ListItem key={childNode.id} node={childNode} />;
-      });
-    }
-
-    return (
-      <li className="list-item">
-        <span className="list-arrow"></span>
-        <span className="list-icon">
-          <img src={require("../assets/" + node.type.toLowerCase() + ".svg")} />
-        </span>
-        <span className="list-name">{node.name.substring(0, 46)}</span>
-        {childNodes ? <ul>{childNodes}</ul> : null}
-      </li>
-    );
-  }
 
   function NodeList(props) {
     if (nodeArray.length) {
@@ -82,6 +37,35 @@ const App = ({}) => {
     } else {
       return null;
     }
+  }
+
+  function ListItem(props) {
+    const node = props.node;
+    let childNodes = null;
+
+    // The component calls itself if there are children
+    if (node.children) {
+      let reversedArray = node.children.reverse();
+      childNodes = reversedArray.map(function(childNode) {
+        console.log(childNode);
+        return <ListItem key={childNode.id} node={childNode} />;
+      });
+    }
+
+    return (
+      <li className="list-item">
+        <div className="list-flex-row">
+          <span className="list-arrow"></span>
+          <span className="list-icon">
+            <img
+              src={require("../assets/" + node.type.toLowerCase() + ".svg")}
+            />
+          </span>
+          <span className="list-name">{node.name.substring(0, 46)}</span>
+        </div>
+        {childNodes ? <ul className="sub-list">{childNodes}</ul> : null}
+      </li>
+    );
   }
 
   return (
