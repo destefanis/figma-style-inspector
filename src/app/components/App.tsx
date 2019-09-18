@@ -4,15 +4,40 @@ import "../styles/ui.css";
 
 declare function require(path: string): any;
 
+function ListItem(props) {
+  const node = props.node;
+  let childNodes = null;
+
+  // The component calls itself if there are children
+  if (node.children) {
+    let reversedArray = node.children.reverse();
+    childNodes = reversedArray.map(function(childNode) {
+      console.log(childNode);
+      return <ListItem key={childNode.id} node={childNode} />;
+    });
+  }
+
+  return (
+    <li id={node.id} className={`list-item`}>
+      <div className="list-flex-row">
+        <span className="list-arrow"></span>
+        <span className="list-icon">
+          <img src={require("../assets/" + node.type.toLowerCase() + ".svg")} />
+        </span>
+        <span className="list-name">{node.name.substring(0, 46)}</span>
+      </div>
+      {childNodes ? <ul className="sub-list">{childNodes}</ul> : null}
+    </li>
+  );
+}
+
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
-  const [menuActive, setMenuState] = useState(false);
 
   const onRunLoop = React.useCallback(() => {
     parent.postMessage({ pluginMessage: { type: "run-app" } }, "*");
   }, []);
 
-  // Hook for lifecycle
   React.useEffect(() => {
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
@@ -38,39 +63,6 @@ const App = ({}) => {
     } else {
       return null;
     }
-  }
-
-  function ListItem(props) {
-    const node = props.node;
-    let childNodes = null;
-
-    // The component calls itself if there are children
-    if (node.children) {
-      let reversedArray = node.children.reverse();
-      childNodes = reversedArray.map(function(childNode) {
-        console.log(childNode);
-        return <ListItem key={childNode.id} node={childNode} />;
-      });
-    }
-
-    return (
-      <li
-        id={node.id}
-        className={`list-item ${menuActive ? "" : "is-hidden"}`}
-        onClick={() => setMenuState(!menuActive)}
-      >
-        <div className="list-flex-row">
-          <span className="list-arrow"></span>
-          <span className="list-icon">
-            <img
-              src={require("../assets/" + node.type.toLowerCase() + ".svg")}
-            />
-          </span>
-          <span className="list-name">{node.name.substring(0, 46)}</span>
-        </div>
-        {childNodes ? <ul className="sub-list">{childNodes}</ul> : null}
-      </li>
-    );
   }
 
   return (
