@@ -1,35 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
 import "../styles/ui.css";
+import classNames from "classnames";
 
 declare function require(path: string): any;
-
-function ListItem(props) {
-  const node = props.node;
-  let childNodes = null;
-
-  // The component calls itself if there are children
-  if (node.children) {
-    let reversedArray = node.children.reverse();
-    childNodes = reversedArray.map(function(childNode) {
-      console.log(childNode);
-      return <ListItem key={childNode.id} node={childNode} />;
-    });
-  }
-
-  return (
-    <li id={node.id} className={`list-item`}>
-      <div className="list-flex-row">
-        <span className="list-arrow"></span>
-        <span className="list-icon">
-          <img src={require("../assets/" + node.type.toLowerCase() + ".svg")} />
-        </span>
-        <span className="list-name">{node.name.substring(0, 46)}</span>
-      </div>
-      {childNodes ? <ul className="sub-list">{childNodes}</ul> : null}
-    </li>
-  );
-}
 
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
@@ -52,17 +26,85 @@ const App = ({}) => {
   }, []);
 
   function NodeList(props) {
+    const [activeNodeIds, setActiveNodeIds] = React.useState([]);
+
+    const handleNodeClick = id => {
+      setActiveNodeIds(activeNodeIds => {
+        if (activeNodeIds.includes(id)) {
+          // The ID is already in the active node list, so we probably want to remove it
+          return activeNodeIds.filter(activeNodeId => activeNodeId !== id);
+        }
+        // Since the ID is not already in the list, we want to add it
+        return activeNodeIds.concat(id);
+      });
+    };
+
     if (nodeArray.length) {
       let nodes = nodeArray;
 
       const listItems = nodes.map(node => (
-        <ListItem key={node.id} node={node} />
+        <ListItem
+          activeNodeIds={activeNodeIds}
+          onClick={handleNodeClick}
+          key={node.id}
+          node={node}
+        />
       ));
 
       return <ul className="list">{listItems}</ul>;
     } else {
       return null;
     }
+  }
+
+  function ListItem(props) {
+    const { activeNodeIds, onClick } = props;
+    const node = props.node;
+    let childNodes = null;
+
+    // The component calls itself if there are children
+    if (node.children) {
+      let reversedArray = node.children.slice().reverse();
+      childNodes = reversedArray.map(function(childNode) {
+        return (
+          <ListItem
+            activeNodeIds={activeNodeIds}
+            onClick={onClick}
+            key={childNode.id}
+            node={childNode}
+          />
+        );
+      });
+    }
+
+    return (
+      <li
+        id={node.id}
+        className={classNames(`list-item`, {
+          "list-item--active": activeNodeIds.includes(node.id)
+        })}
+        onClick={event => {
+          event.stopPropagation();
+          onClick(node.id);
+        }}
+      >
+        <div className="list-flex-row">
+          <span className="list-arrow">
+            <img
+              className="list-arrow-icon"
+              src={require("../assets/caret.svg")}
+            />
+          </span>
+          <span className="list-icon">
+            <img
+              src={require("../assets/" + node.type.toLowerCase() + ".svg")}
+            />
+          </span>
+          <span className="list-name">{node.name.substring(0, 46)}</span>
+        </div>
+        {childNodes ? <ul className="sub-list">{childNodes}</ul> : null}
+      </li>
+    );
   }
 
   return (
