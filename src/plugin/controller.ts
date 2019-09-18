@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 380, height: 600 });
+figma.showUI(__html__, { width: 380, height: 540 });
 
 figma.ui.onmessage = msg => {
   // Fetch a specific node by ID.
