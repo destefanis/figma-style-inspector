@@ -2,11 +2,13 @@ import * as React from "react";
 import { useState } from "react";
 import "../styles/ui.css";
 import classNames from "classnames";
+import Panel from "./Panel";
 
 declare function require(path: string): any;
 
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
+  const [selectedNode, setSelectedNode] = React.useState({});
 
   const onRunLoop = React.useCallback(() => {
     parent.postMessage({ pluginMessage: { type: "run-app" } }, "*");
@@ -28,7 +30,26 @@ const App = ({}) => {
   function NodeList(props) {
     const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
+    React.useEffect(() => {
+      // Communicate with the plugin UI.
+      window.onmessage = event => {
+        const { type, data } = event.data.pluginMessage;
+
+        if (type === "fetched layer") {
+          console.log("received");
+          console.log(data);
+          setSelectedNode(JSON.parse(data));
+        }
+      };
+    }, []);
+
     const handleNodeClick = id => {
+      // Pass the plugin the ID of the layer we want to fetch.
+      parent.postMessage(
+        { pluginMessage: { type: "fetch-layer-data", id: id } },
+        "*"
+      );
+
       setActiveNodeIds(activeNodeIds => {
         if (activeNodeIds.includes(id)) {
           // The ID is already in the active node list, so we probably want to remove it
@@ -90,10 +111,12 @@ const App = ({}) => {
       >
         <div className="list-flex-row">
           <span className="list-arrow">
-            <img
-              className="list-arrow-icon"
-              src={require("../assets/caret.svg")}
-            />
+            {childNodes ? (
+              <img
+                className="list-arrow-icon"
+                src={require("../assets/caret.svg")}
+              />
+            ) : null}
           </span>
           <span className="list-icon">
             <img
@@ -109,7 +132,10 @@ const App = ({}) => {
 
   return (
     <div>
-      <NodeList />
+      <div className="flex-wrapper">
+        <NodeList node={selectedNode} />
+        <Panel />
+      </div>
       <button id="create" onClick={onRunLoop}>
         Fetch Styles
       </button>

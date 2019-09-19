@@ -1,0 +1,17 @@
+.panel {
+  flex: 1 0 60%;
+  border-left: 1px solid #ebebeb;
+  padding: 16px;
+}
+
+.node-title {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.node-body {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.7;
+}

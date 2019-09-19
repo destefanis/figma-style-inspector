@@ -1,13 +1,15 @@
-figma.showUI(__html__, { width: 380, height: 540 });
+figma.showUI(__html__, { width: 580, height: 440 });
 
 figma.ui.onmessage = msg => {
   // Fetch a specific node by ID.
   if (msg.type === "fetch-layer-data") {
     let layer = figma.getNodeById(msg.id);
 
+    let layerData = JSON.stringify(layer, ["name", "type", "id"]);
+
     figma.ui.postMessage({
       type: "fetched layer",
-      layerData: returnData
+      data: layerData
     });
   }
 

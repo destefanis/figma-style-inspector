@@ -20,13 +20,13 @@ button {
   color: white;
 }
 
-input {
-  border: none;
-  outline: none;
-  padding: 8px;
+.flex-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
 }
 
 .list {
+  flex: 1 0 40%;
   margin: 0;
   padding: 0;
   -webkit-padding-start: 0;
@@ -64,7 +64,7 @@ input {
   display: block;
 }
 
-.list-item--active .list-arrow-icon {
+.list-item--active > div > .list-arrow > .list-arrow-icon {
   transform: rotate(0deg);
 }
 
