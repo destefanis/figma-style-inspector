@@ -8,7 +8,7 @@ declare function require(path: string): any;
 
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
-  const [selectedNode, setSelectedNode] = React.useState({ node: "" });
+  const [selectedNode, setSelectedNode] = React.useState({});
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
   const onRunLoop = React.useCallback(() => {
@@ -26,9 +26,7 @@ const App = ({}) => {
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
         let parsedMessage = JSON.parse(message);
-        setSelectedNode(selectedNode => ({ node: parsedMessage }));
-
-        console.log(selectedNode);
+        setSelectedNode(selectedNode => parsedMessage);
       }
     };
   }, []);
@@ -124,8 +122,8 @@ const App = ({}) => {
   return (
     <div>
       <div className="flex-wrapper">
-        <NodeList node={selectedNode} />
-        <Panel />
+        <NodeList />
+        <Panel node={selectedNode} />
       </div>
       <button id="create" onClick={onRunLoop}>
         Fetch Styles
