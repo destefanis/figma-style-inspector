@@ -9,7 +9,7 @@ figma.ui.onmessage = msg => {
 
     figma.ui.postMessage({
       type: "fetched layer",
-      data: layerData
+      message: layerData
     });
   }
 

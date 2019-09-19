@@ -23,25 +23,14 @@ const App = ({}) => {
       if (type === "complete") {
         // The data received is serialized so we need to parse it before use.
         setNodeAarray(JSON.parse(message));
+      } else if (type === "fetched layer") {
+        setSelectedNode(JSON.parse(message));
       }
     };
   }, []);
 
   function NodeList(props) {
     const [activeNodeIds, setActiveNodeIds] = React.useState([]);
-
-    React.useEffect(() => {
-      // Communicate with the plugin UI.
-      window.onmessage = event => {
-        const { type, data } = event.data.pluginMessage;
-
-        if (type === "fetched layer") {
-          console.log("received");
-          console.log(data);
-          setSelectedNode(JSON.parse(data));
-        }
-      };
-    }, []);
 
     const handleNodeClick = id => {
       // Pass the plugin the ID of the layer we want to fetch.
