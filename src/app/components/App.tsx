@@ -8,7 +8,8 @@ declare function require(path: string): any;
 
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
-  const [selectedNode, setSelectedNode] = React.useState({});
+  const [selectedNode, setSelectedNode] = React.useState({ node: "" });
+  const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
   const onRunLoop = React.useCallback(() => {
     parent.postMessage({ pluginMessage: { type: "run-app" } }, "*");
@@ -24,14 +25,15 @@ const App = ({}) => {
         // The data received is serialized so we need to parse it before use.
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
-        setSelectedNode(JSON.parse(message));
+        let parsedMessage = JSON.parse(message);
+        setSelectedNode(selectedNode => ({ node: parsedMessage }));
+
+        console.log(selectedNode);
       }
     };
   }, []);
 
   function NodeList(props) {
-    const [activeNodeIds, setActiveNodeIds] = React.useState([]);
-
     const handleNodeClick = id => {
       // Pass the plugin the ID of the layer we want to fetch.
       parent.postMessage(
