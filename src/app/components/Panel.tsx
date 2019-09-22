@@ -9,11 +9,10 @@ function Panel(props) {
   return (
     <aside className="panel">
       {props.node ? (
-        <h1 className="node-title">{props.node.name}</h1>
+        <h1 className="node-title">Name: {props.node.name}</h1>
       ) : (
         <h1 className="node-title">Placeholder</h1>
       )}
-      <p className="node-description">Here's the description for the node</p>
       <ul>
         <li>
           <div>

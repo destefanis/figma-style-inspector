@@ -9,6 +9,7 @@ declare function require(path: string): any;
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
   const [selectedNode, setSelectedNode] = React.useState({});
+  const [selectedListItems, setSelectedListItem] = React.useState([]);
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
   const onRunLoop = React.useCallback(() => {
@@ -26,6 +27,7 @@ const App = ({}) => {
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
         let parsedMessage = JSON.parse(message);
+        console.log(parsedMessage);
         setSelectedNode(selectedNode => parsedMessage);
       }
     };
@@ -38,6 +40,11 @@ const App = ({}) => {
         { pluginMessage: { type: "fetch-layer-data", id: id } },
         "*"
       );
+
+      setSelectedListItem(selectedListItems => {
+        selectedListItems.splice(0, selectedListItems.length);
+        return selectedListItems.concat(id);
+      });
 
       setActiveNodeIds(activeNodeIds => {
         if (activeNodeIds.includes(id)) {
@@ -91,7 +98,8 @@ const App = ({}) => {
       <li
         id={node.id}
         className={classNames(`list-item`, {
-          "list-item--active": activeNodeIds.includes(node.id)
+          "list-item--active": activeNodeIds.includes(node.id),
+          "list-item--selected": selectedListItems.includes(node.id)
         })}
         onClick={event => {
           event.stopPropagation();

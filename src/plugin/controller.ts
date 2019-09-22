@@ -5,7 +5,16 @@ figma.ui.onmessage = msg => {
   if (msg.type === "fetch-layer-data") {
     let layer = figma.getNodeById(msg.id);
 
-    let layerData = JSON.stringify(layer, ["name", "type", "id"]);
+    let keys = Object.keys(layer.__proto__);
+
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i] === "parent" || keys[i] === "removed") {
+        keys.splice(i, 1);
+        i--;
+      }
+    }
+
+    let layerData = JSON.stringify(layer, keys);
 
     figma.ui.postMessage({
       type: "fetched layer",

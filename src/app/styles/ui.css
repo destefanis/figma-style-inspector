@@ -60,6 +60,14 @@ button {
   display: none;
 }
 
+.list-item--selected > .list-flex-row {
+  background: #daebf7;
+}
+
+.list-item--selected ul {
+  background: #edf5fa;
+}
+
 .list-item--active > ul {
   display: block;
 }
