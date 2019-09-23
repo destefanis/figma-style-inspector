@@ -1,26 +1,28 @@
 import * as React from "react";
-import { useState } from "react";
 import "../styles/panel.css";
-import classNames from "classnames";
 
 declare function require(path: string): any;
+
+function PropertiesList(props) {
+  let obj = props.properties;
+
+  const listItems = Object.keys(obj).map(key => (
+    <li className="panel-list-item" value={obj.id}>
+      <span className="list-item-key">{key}:</span>
+      <span className="list-item-value">{JSON.stringify(obj[key])}</span>
+    </li>
+  ));
+
+  return <ul className="panel-list">{listItems}</ul>;
+}
 
 function Panel(props) {
   return (
     <aside className="panel">
-      {props.node ? (
-        <h1 className="node-title">Name: {props.node.name}</h1>
-      ) : (
-        <h1 className="node-title">Placeholder</h1>
+      {props.node.name ? null : (
+        <h1 className="panel-title">Select a layer to get started :)</h1>
       )}
-      <ul>
-        <li>
-          <div>
-            <span>Node Type</span>
-            <span>Rectangle</span>
-          </div>
-        </li>
-      </ul>
+      <PropertiesList properties={props.node} />
     </aside>
   );
 }

@@ -23,15 +23,15 @@ button {
 .flex-wrapper {
   display: flex;
   flex-flow: row nowrap;
+  width: 100%;
 }
 
 .list {
-  flex: 1 0 40%;
+  flex: 1 0 50%;
   margin: 0;
   padding: 0;
   -webkit-padding-start: 0;
   height: 100%;
-  width: 100%;
   overflow: scroll;
 }
 
@@ -120,7 +120,7 @@ button {
   width: 100%;
   margin: 0;
   -webkit-padding-start: 0;
-  padding: 0 24px;
+  padding: 0 0 0 24px;
 }
 
 .sub-list .list-flex-row {

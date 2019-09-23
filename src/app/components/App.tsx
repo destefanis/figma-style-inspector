@@ -27,7 +27,6 @@ const App = ({}) => {
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
         let parsedMessage = JSON.parse(message);
-        console.log(parsedMessage);
         setSelectedNode(selectedNode => parsedMessage);
       }
     };

@@ -1,17 +1,33 @@
 .panel {
-  flex: 1 0 60%;
+  flex: 1 0 50%;
+  height: 100%;
+  overflow-y: scroll;
   border-left: 1px solid #ebebeb;
-  padding: 16px;
 }
 
-.node-title {
-  margin: 0 0 8px;
+.panel-title {
   font-size: 14px;
-  font-weight: 500;
+  padding: 8px 0 8px 12px;
 }
 
-.node-body {
-  font-size: 16px;
-  line-height: 1.6;
-  opacity: 0.7;
+.panel-list {
+  margin: 0;
+  font-size: 12px;
+  padding: 8px 0 8px 12px;
+  overflow: scroll;
+}
+
+.panel-list-item {
+  list-style: none;
+  padding: 2px 0;
+  display: flex;
+  flex-flow: row;
+}
+
+.list-item-key {
+  margin-right: 4px;
+}
+
+.list-item-value {
+  color: #18a0fb;
 }
