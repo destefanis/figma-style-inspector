@@ -1,8 +1,9 @@
 .panel {
   flex: 1 0 50%;
   height: 100%;
-  overflow-y: scroll;
   border-left: 1px solid #ebebeb;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .panel-title {
@@ -12,8 +13,8 @@
 
 .panel-list {
   margin: 0;
-  font-size: 12px;
-  padding: 8px 0 8px 12px;
+  font-size: 14px;
+  padding: 8px 8px 8px 12px;
   overflow: scroll;
 }
 
