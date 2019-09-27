@@ -12,11 +12,14 @@ const App = ({}) => {
   const [selectedListItems, setSelectedListItem] = React.useState([]);
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
-  const onRunLoop = React.useCallback(() => {
+  const onRunApp = React.useCallback(() => {
     parent.postMessage({ pluginMessage: { type: "run-app" } }, "*");
   }, []);
 
   React.useEffect(() => {
+    // Run the app
+    onRunApp();
+
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
       const { type, message } = event.data.pluginMessage;
@@ -132,9 +135,6 @@ const App = ({}) => {
         <NodeList />
         <Panel node={selectedNode} />
       </div>
-      <button id="create" onClick={onRunLoop}>
-        Fetch Styles
-      </button>
     </div>
   );
 };

@@ -16,19 +16,33 @@
   font-size: 14px;
   padding: 8px 8px 8px 12px;
   overflow: scroll;
+  color: #333;
 }
 
 .panel-list-item {
   list-style: none;
-  padding: 2px 0;
+  padding: 0 0 8px;
   display: flex;
   flex-flow: row;
 }
 
 .list-item-key {
-  margin-right: 4px;
+  margin-right: 6px;
+  color: #a9a9a9;
 }
 
 .list-item-value {
-  color: #18a0fb;
+  color: #2c2c2c;
+}
+
+.item-value--array {
+  color: #2c2c2c;
+}
+
+.item-value--object {
+  color: rgb(86, 81, 255);
+}
+
+.item-value--string {
+  color: #08ca77;
 }

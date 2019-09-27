@@ -6,10 +6,19 @@ declare function require(path: string): any;
 function PropertiesList(props) {
   let obj = props.properties;
 
+  function determineType(obj, key) {
+    let val = typeof obj[key];
+    return val;
+  }
+
   const listItems = Object.keys(obj).map(key => (
-    <li className="panel-list-item" value={obj.id}>
-      <span className="list-item-key">{key}:</span>
-      <span className="list-item-value">{JSON.stringify(obj[key])}</span>
+    <li className={`panel-list-item list-item--${key}`} value={obj.id}>
+      <span className={`list-item-key key--${key}`}>{key}:</span>
+      <span
+        className={`list-item-value item-value--${determineType(obj, key)}`}
+      >
+        {JSON.stringify(obj[key])},
+      </span>
     </li>
   ));
 
