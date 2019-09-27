@@ -1,5 +1,5 @@
 .panel {
-  flex: 1 0 50%;
+  flex: 1 0 60%;
   height: 100%;
   border-left: 1px solid #ebebeb;
   overflow-y: scroll;
@@ -21,13 +21,17 @@
 
 .panel-list-item {
   list-style: none;
-  padding: 0 0 8px;
+  padding: 0 0 6px;
   display: flex;
   flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
 }
 
 .list-item-key {
   margin-right: 6px;
+  margin-bottom: 4px;
   color: #a9a9a9;
 }
 

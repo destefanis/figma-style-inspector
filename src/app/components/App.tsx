@@ -6,6 +6,14 @@ import Panel from "./Panel";
 
 declare function require(path: string): any;
 
+const onFocus = () => {
+  console.log("Tab is in focus");
+};
+
+const onBlur = () => {
+  console.log("Tab is blurred");
+};
+
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
   const [selectedNode, setSelectedNode] = React.useState({});
@@ -19,6 +27,9 @@ const App = ({}) => {
   React.useEffect(() => {
     // Run the app
     onRunApp();
+
+    window.addEventListener("focus", onFocus);
+    window.addEventListener("blur", onBlur);
 
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
