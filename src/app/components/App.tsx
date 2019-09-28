@@ -1,24 +1,36 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../styles/ui.css";
 import classNames from "classnames";
 import Panel from "./Panel";
 
 declare function require(path: string): any;
 
-const onFocus = () => {
-  console.log("Tab is in focus");
-};
-
-const onBlur = () => {
-  console.log("Tab is blurred");
-};
-
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
   const [selectedNode, setSelectedNode] = React.useState({});
   const [selectedListItems, setSelectedListItem] = React.useState([]);
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
+
+  let newWindowFocus = true;
+
+  const onFocus = () => {
+    newWindowFocus = true;
+    pollForChanges();
+  };
+
+  const onBlur = () => {
+    newWindowFocus = false;
+    pollForChanges();
+  };
+
+  function pollForChanges() {
+    if (newWindowFocus === false) {
+      setTimeout(() => {
+        pollForChanges();
+      }, 200);
+    }
+  }
 
   const onRunApp = React.useCallback(() => {
     parent.postMessage({ pluginMessage: { type: "run-app" } }, "*");

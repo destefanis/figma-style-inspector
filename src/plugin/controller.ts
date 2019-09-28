@@ -22,22 +22,21 @@ figma.ui.onmessage = msg => {
     });
   }
 
-  // Initalize the app
-  if (msg.type === "run-app") {
-    // Traverses the node tree
-    function traverse(node) {
-      if ("children" in node) {
-        if (node.type !== "INSTANCE") {
-          for (const child of node.children) {
-            traverse(child);
-          }
+  // Traverses the node tree
+  function traverse(node) {
+    if ("children" in node) {
+      if (node.type !== "INSTANCE") {
+        for (const child of node.children) {
+          traverse(child);
         }
       }
-      return node;
     }
+    return node;
+  }
 
+  function updateNodes(selection) {
     // Loop through the current selection in Figma.
-    let allNodes = traverse(figma.currentPage.selection);
+    let allNodes = traverse(selection);
     let serializedNodes = JSON.stringify(allNodes, [
       "name",
       "type",
@@ -45,11 +44,23 @@ figma.ui.onmessage = msg => {
       "id"
     ]);
 
-    // Pass the array back to the UI to be displayed.
-    figma.ui.postMessage({
-      type: "complete",
-      message: serializedNodes
-    });
+    return serializedNodes;
+  }
+
+  // Initalize the app
+  // Todo update this to detect if selection is 0, then run a new query
+  // when not focused, poll for changes and "check for updates".
+  if (msg.type === "run-app") {
+    if (figma.currentPage.selection.length === 0) {
+      return;
+    } else {
+      let selection = figma.currentPage.selection;
+      // Pass the array back to the UI to be displayed.
+      figma.ui.postMessage({
+        type: "complete",
+        message: updateNodes(selection)
+      });
+    }
   }
 
   // To be used for fetching style dev info.
