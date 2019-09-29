@@ -12,7 +12,7 @@ const App = ({}) => {
   const [selectedListItems, setSelectedListItem] = React.useState([]);
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
-  let newWindowFocus = true;
+  let newWindowFocus = false;
 
   const onFocus = () => {
     newWindowFocus = true;
@@ -26,6 +26,8 @@ const App = ({}) => {
 
   function pollForChanges() {
     if (newWindowFocus === false) {
+      parent.postMessage({ pluginMessage: { type: "update-selection" } }, "*");
+
       setTimeout(() => {
         pollForChanges();
       }, 200);
@@ -39,6 +41,7 @@ const App = ({}) => {
   React.useEffect(() => {
     // Run the app
     onRunApp();
+    pollForChanges();
 
     window.addEventListener("focus", onFocus);
     window.addEventListener("blur", onBlur);
@@ -95,7 +98,14 @@ const App = ({}) => {
 
       return <ul className="list">{listItems}</ul>;
     } else {
-      return null;
+      return (
+        <ul className="list">
+          <li className="list-item"></li>
+          <li className="list-item"></li>
+          <li className="list-item"></li>
+          <li className="list-item"></li>
+        </ul>
+      );
     }
   }
 

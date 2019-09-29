@@ -1,5 +1,7 @@
 figma.showUI(__html__, { width: 720, height: 440 });
 
+let selectedNodeId = "";
+
 figma.ui.onmessage = msg => {
   // Fetch a specific node by ID.
   if (msg.type === "fetch-layer-data") {
@@ -47,14 +49,35 @@ figma.ui.onmessage = msg => {
     return serializedNodes;
   }
 
+  // If no layer is selected
+  if (msg.type === "update-selection") {
+    console.log("message received");
+    if (figma.currentPage.selection.length === 0) {
+      return;
+    } else {
+      if (figma.currentPage.selection[0].id !== selectedNodeId) {
+        let selection = figma.currentPage.selection;
+        // Update the most recent selected node so we stop updating the UI.
+        selectedNodeId = selection[0].id;
+        // Pass the array back to the UI to be displayed.
+        figma.ui.postMessage({
+          type: "complete",
+          message: updateNodes(selection)
+        });
+      }
+    }
+  }
+
   // Initalize the app
-  // Todo update this to detect if selection is 0, then run a new query
-  // when not focused, poll for changes and "check for updates".
   if (msg.type === "run-app") {
     if (figma.currentPage.selection.length === 0) {
       return;
     } else {
       let selection = figma.currentPage.selection;
+
+      // Set the intial node ID to compare to later.
+      selectedNodeId = selection[0].id;
+
       // Pass the array back to the UI to be displayed.
       figma.ui.postMessage({
         type: "complete",
