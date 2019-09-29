@@ -9,7 +9,7 @@ declare function require(path: string): any;
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
   const [selectedNode, setSelectedNode] = React.useState({});
-  const [selectedNodeStyles, setSelectedNodeStyles] = React.useState({});
+  const [selectedNodeStyles, setSelectedNodeStyles] = React.useState([]);
   const [selectedListItems, setSelectedListItem] = React.useState([]);
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
@@ -48,7 +48,7 @@ const App = ({}) => {
 
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message, styles } = event.data.pluginMessage;
+      const { type, message } = event.data.pluginMessage;
 
       // Plugin code returns this message after finished a loop.
       if (type === "complete") {
@@ -56,7 +56,11 @@ const App = ({}) => {
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
         setSelectedNode(selectedNode => JSON.parse(message));
-        setSelectedNodeStyles(selectedNodeStyles => JSON.parse(styles));
+      } else if (type === "fetched styles") {
+        let newArray = JSON.parse(message);
+        console.log(newArray);
+        setSelectedNodeStyles([...selectedNodeStyles, ...newArray]);
+        console.log(selectedNodeStyles);
       }
     };
   }, []);

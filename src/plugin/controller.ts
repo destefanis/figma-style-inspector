@@ -7,35 +7,29 @@ figma.ui.onmessage = msg => {
   if (msg.type === "fetch-layer-data") {
     let layer = figma.getNodeById(msg.id);
     let styles = checkForStyles(layer);
-    let stylesArray = [];
     let promisesArray = [];
 
     if (styles.length >= 1) {
       styles.forEach(function(style) {
         promisesArray.push(figma.importStyleByKeyAsync(style.key));
-
-        // importedStyle.then((object) => {
-        //   console.log(object);
-        //   stylesArray.push(object);
-        // });
       });
     }
+
     // Todo add promises, then resolve and add to array.
-    console.log(promisesArray);
-
     Promise.all(promisesArray).then(values => {
-      stylesArray.push(values);
+      let stylesData = JSON.stringify(values, [
+        "name",
+        "description",
+        "key",
+        "type",
+        "paints"
+      ]);
+
+      figma.ui.postMessage({
+        type: "fetched styles",
+        message: stylesData
+      });
     });
-
-    console.log(stylesArray);
-
-    let stylesData = JSON.stringify(stylesArray, [
-      "name",
-      "description",
-      "key",
-      "type",
-      "paints"
-    ]);
 
     let keys = Object.keys(layer.__proto__);
 
@@ -50,8 +44,7 @@ figma.ui.onmessage = msg => {
 
     figma.ui.postMessage({
       type: "fetched layer",
-      message: layerData,
-      styles: stylesData
+      message: layerData
     });
   }
 
