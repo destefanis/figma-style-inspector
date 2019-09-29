@@ -13,15 +13,14 @@
 
 .panel-list {
   margin: 0;
-  font-size: 14px;
-  padding: 8px 8px 8px 12px;
+  padding: 10px 0;
   overflow: scroll;
   color: #333;
 }
 
 .panel-list-item {
   list-style: none;
-  padding: 0 0 6px;
+  padding: 6px 16px 6px;
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
@@ -29,14 +28,22 @@
   align-content: flex-start;
 }
 
+.panel-list-item:nth-child(odd) {
+  background: #f5f5f5;
+}
+
 .list-item-key {
   margin-right: 6px;
-  margin-bottom: 4px;
-  color: #a9a9a9;
+  /* margin-bottom: 2px; */
+  font-size: 14px;
+  color: #2c2c2c;
+  font-weight: 500;
 }
 
 .list-item-value {
   color: #2c2c2c;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .item-value--array {
