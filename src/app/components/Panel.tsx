@@ -28,7 +28,7 @@ function StylesList(props) {
         }}
         className="copy-button"
       >
-        Copy
+        {buttonText}
       </button>
     </li>
   ));
@@ -114,7 +114,7 @@ function Panel(props) {
           <StylesList properties={props.styles} />
         </React.Fragment>
       )}
-      <h4 className="section-title">Properties</h4>
+      {/* <h4 className="section-title">Properties</h4> */}
       <PropertiesList properties={props.node} name={props.node.name} />
     </aside>
   );
