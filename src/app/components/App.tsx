@@ -9,6 +9,7 @@ declare function require(path: string): any;
 const App = ({}) => {
   const [nodeArray, setNodeAarray] = useState([]);
   const [selectedNode, setSelectedNode] = React.useState({});
+  const [selectedNodeStyles, setSelectedNodeStyles] = React.useState({});
   const [selectedListItems, setSelectedListItem] = React.useState([]);
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
@@ -16,7 +17,6 @@ const App = ({}) => {
 
   const onFocus = () => {
     newWindowFocus = true;
-    pollForChanges();
   };
 
   const onBlur = () => {
@@ -48,15 +48,15 @@ const App = ({}) => {
 
     // This is how we read messages sent from the plugin controller
     window.onmessage = event => {
-      const { type, message } = event.data.pluginMessage;
+      const { type, message, styles } = event.data.pluginMessage;
 
       // Plugin code returns this message after finished a loop.
       if (type === "complete") {
         // The data received is serialized so we need to parse it before use.
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
-        let parsedMessage = JSON.parse(message);
-        setSelectedNode(selectedNode => parsedMessage);
+        setSelectedNode(selectedNode => JSON.parse(message));
+        setSelectedNodeStyles(selectedNodeStyles => JSON.parse(styles));
       }
     };
   }, []);
@@ -166,7 +166,7 @@ const App = ({}) => {
     <div>
       <div className="flex-wrapper">
         <NodeList />
-        <Panel node={selectedNode} />
+        <Panel node={selectedNode} styles={selectedNodeStyles} />
       </div>
     </div>
   );

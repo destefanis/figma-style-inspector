@@ -6,6 +6,36 @@ figma.ui.onmessage = msg => {
   // Fetch a specific node by ID.
   if (msg.type === "fetch-layer-data") {
     let layer = figma.getNodeById(msg.id);
+    let styles = checkForStyles(layer);
+    let stylesArray = [];
+    let promisesArray = [];
+
+    if (styles.length >= 1) {
+      styles.forEach(function(style) {
+        promisesArray.push(figma.importStyleByKeyAsync(style.key));
+
+        // importedStyle.then((object) => {
+        //   console.log(object);
+        //   stylesArray.push(object);
+        // });
+      });
+    }
+    // Todo add promises, then resolve and add to array.
+    console.log(promisesArray);
+
+    Promise.all(promisesArray).then(values => {
+      stylesArray.push(values);
+    });
+
+    console.log(stylesArray);
+
+    let stylesData = JSON.stringify(stylesArray, [
+      "name",
+      "description",
+      "key",
+      "type",
+      "paints"
+    ]);
 
     let keys = Object.keys(layer.__proto__);
 
@@ -20,7 +50,8 @@ figma.ui.onmessage = msg => {
 
     figma.ui.postMessage({
       type: "fetched layer",
-      message: layerData
+      message: layerData,
+      styles: stylesData
     });
   }
 
@@ -49,9 +80,9 @@ figma.ui.onmessage = msg => {
     return serializedNodes;
   }
 
-  // If no layer is selected
+  // When the UI isn't focused and the app is polling for changes
+  // it runs against this snippet to see if a new layer has been selected.
   if (msg.type === "update-selection") {
-    console.log("message received");
     if (figma.currentPage.selection.length === 0) {
       return;
     } else {
@@ -86,13 +117,25 @@ figma.ui.onmessage = msg => {
     }
   }
 
-  // To be used for fetching style dev info.
-  function checkForStyle(node) {
+  function checkForStyles(node) {
+    let nodeStyles = [];
+
     if (node.fillStyleId) {
-      let style = figma.getStyleById(node.fillStyleId);
-      return style;
-    } else {
-      return;
+      nodeStyles.push(figma.getStyleById(node.fillStyleId));
     }
+    if (node.backgroundStyleId) {
+      nodeStyles.push(figma.getStyleById(node.backgroundStyleId));
+    }
+    if (node.textStyleId) {
+      nodeStyles.push(figma.getStyleById(node.textStyleId));
+    }
+    if (node.strokeStyleId) {
+      nodeStyles.push(figma.getStyleById(node.textStyleId));
+    }
+    if (node.effectStyleId) {
+      nodeStyles.push(figma.getStyleById(node.effectStyleId));
+    }
+
+    return nodeStyles;
   }
 };
