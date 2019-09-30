@@ -17,12 +17,16 @@ figma.ui.onmessage = msg => {
 
     // Todo add promises, then resolve and add to array.
     Promise.all(promisesArray).then(values => {
+      console.log(values);
+
       let stylesData = JSON.stringify(values, [
         "name",
         "description",
         "key",
         "type",
-        "paints"
+        "remote",
+        "paints",
+        "font"
       ]);
 
       figma.ui.postMessage({

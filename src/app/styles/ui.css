@@ -1,5 +1,6 @@
 body {
   font: 12px sans-serif;
+  font-family: Inter, Roboto, sans-serif;
   margin: 0;
   overflow: hidden;
 }
@@ -115,7 +116,6 @@ button {
 .list-name {
   margin: 0 8px;
   font-size: 12px;
-  font-family: sans-serif;
 }
 
 .sub-list {
@@ -130,5 +130,5 @@ button {
 }
 
 .frame {
-  font-weight: 600;
+  font-weight: 400;
 }

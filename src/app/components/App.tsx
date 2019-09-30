@@ -58,9 +58,10 @@ const App = ({}) => {
         setSelectedNode(selectedNode => JSON.parse(message));
       } else if (type === "fetched styles") {
         let newArray = JSON.parse(message);
-        console.log(newArray);
-        setSelectedNodeStyles([...selectedNodeStyles, ...newArray]);
-        console.log(selectedNodeStyles);
+
+        setSelectedNodeStyles(selectedNodeStyles => {
+          return newArray.slice(0);
+        });
       }
     };
   }, []);
@@ -102,14 +103,7 @@ const App = ({}) => {
 
       return <ul className="list">{listItems}</ul>;
     } else {
-      return (
-        <ul className="list">
-          <li className="list-item"></li>
-          <li className="list-item"></li>
-          <li className="list-item"></li>
-          <li className="list-item"></li>
-        </ul>
-      );
+      return <ul className="list"></ul>;
     }
   }
 

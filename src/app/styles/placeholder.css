@@ -1,0 +1,31 @@
+.placeholder {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin: auto;
+  height: 100%;
+}
+
+.placeholder-wrapper {
+  display: flex;
+  flex-flow: column;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
+}
+
+.placeholder-icon {
+  width: 35%;
+  height: auto;
+  margin: auto;
+}
+
+.placeholder-title {
+  line-height: 1.6;
+  font-size: 16px;
+  color: #888;
+  font-weight: 500;
+  margin-top: 16px;
+  margin-bottom: 0;
+  text-align: center;
+}
