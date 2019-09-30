@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import "../styles/ui.css";
 import classNames from "classnames";
 import Panel from "./Panel";
+import { node } from "../../../node_modules/@types/prop-types";
 
 declare function require(path: string): any;
 
@@ -25,7 +26,10 @@ const App = ({}) => {
   };
 
   function pollForChanges() {
-    if (newWindowFocus === false) {
+    let i = 0;
+    i++;
+
+    if (newWindowFocus === false && i < 900) {
       parent.postMessage({ pluginMessage: { type: "update-selection" } }, "*");
 
       setTimeout(() => {
@@ -51,14 +55,13 @@ const App = ({}) => {
       const { type, message } = event.data.pluginMessage;
 
       // Plugin code returns this message after finished a loop.
+      // The data received is serialized so we need to parse it before use.
       if (type === "complete") {
-        // The data received is serialized so we need to parse it before use.
         setNodeAarray(JSON.parse(message));
       } else if (type === "fetched layer") {
         setSelectedNode(selectedNode => JSON.parse(message));
       } else if (type === "fetched styles") {
         let newArray = JSON.parse(message);
-
         setSelectedNodeStyles(selectedNodeStyles => {
           return newArray.slice(0);
         });
@@ -67,6 +70,28 @@ const App = ({}) => {
   }, []);
 
   function NodeList(props) {
+    // This keeps calling itself.
+    // React.useEffect(() => {
+    //   if (nodeArray.length) {
+
+    //     // Pass the plugin the ID of the layer we want to fetch.
+    //     parent.postMessage(
+    //       { pluginMessage: { type: "fetch-layer-data", id: nodeArray[0].id } },
+    //       "*"
+    //     );
+
+    //     setSelectedListItem(selectedListItems => {
+    //       selectedListItems.splice(0, selectedListItems.length);
+    //       return selectedListItems.concat(nodeArray[0].id);
+    //     });
+
+    //     setActiveNodeIds(activeNodeIds => {
+    //       // Since the ID is not already in the list, we want to add it
+    //       return activeNodeIds.concat(nodeArray[0].id);
+    //     });
+    //   }
+    // }, []);
+
     const handleNodeClick = id => {
       // Pass the plugin the ID of the layer we want to fetch.
       parent.postMessage(

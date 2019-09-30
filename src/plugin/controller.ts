@@ -9,16 +9,15 @@ figma.ui.onmessage = msg => {
     let styles = checkForStyles(layer);
     let promisesArray = [];
 
+    // We have to fetch each style Async, so we create an array of promises
     if (styles.length >= 1) {
       styles.forEach(function(style) {
         promisesArray.push(figma.importStyleByKeyAsync(style.key));
       });
     }
 
-    // Todo add promises, then resolve and add to array.
+    // Once the promises resolve, send that data to the UI.
     Promise.all(promisesArray).then(values => {
-      console.log(values);
-
       let stylesData = JSON.stringify(values, [
         "name",
         "description",
@@ -67,6 +66,9 @@ figma.ui.onmessage = msg => {
   function updateNodes(selection) {
     // Loop through the current selection in Figma.
     let allNodes = traverse(selection);
+    if (allNodes.length > 50) {
+      return;
+    }
     let serializedNodes = JSON.stringify(allNodes, [
       "name",
       "type",
@@ -114,6 +116,7 @@ figma.ui.onmessage = msg => {
     }
   }
 
+  // We don't know what styles a node will have so check for all of them.
   function checkForStyles(node) {
     let nodeStyles = [];
 
