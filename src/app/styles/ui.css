@@ -34,8 +34,9 @@ button {
   padding: 0;
   -webkit-padding-start: 0;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
+  position: relative;
 }
 
 .list-arrow {
@@ -131,4 +132,10 @@ button {
 
 .frame {
   font-weight: 400;
+}
+
+.list-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }

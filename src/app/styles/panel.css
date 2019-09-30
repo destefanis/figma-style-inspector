@@ -2,7 +2,7 @@
   flex: 1 0 60%;
   height: 100%;
   border-left: 1px solid #ebebeb;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -34,7 +34,6 @@
 .panel-list {
   margin: 0;
   padding: 0;
-  overflow: scroll;
   color: #333;
 }
 
