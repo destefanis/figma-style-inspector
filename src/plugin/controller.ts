@@ -66,9 +66,6 @@ figma.ui.onmessage = msg => {
   function updateNodes(selection) {
     // Loop through the current selection in Figma.
     let allNodes = traverse(selection);
-    if (allNodes.length > 50) {
-      return;
-    }
     let serializedNodes = JSON.stringify(allNodes, [
       "name",
       "type",

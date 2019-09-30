@@ -27,6 +27,15 @@ function StyleListItem(props) {
         <div className="style-item-row">
           <span className="style-fill-image"></span>
           <span className="style-name">{style.name}</span>
+          <button
+            onClick={() => {
+              copy(JSON.stringify(style.name));
+              updateCopy();
+            }}
+            className="copy-button copy-button--style-title"
+          >
+            {buttonText}
+          </button>
         </div>
       )}
       {style.description ? (

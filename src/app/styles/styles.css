@@ -16,6 +16,12 @@
   flex-flow: row;
   align-content: center;
   justify-content: flex-start;
+  position: relative;
+}
+
+.style-item-row:hover .copy-button {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .style-name {
@@ -33,6 +39,7 @@
 }
 
 .style-fill-image {
+  flex: 0 0 18px;
   height: 18px;
   width: 18px;
   margin: 0 8px 0 0;

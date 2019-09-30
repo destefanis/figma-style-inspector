@@ -84,6 +84,11 @@
   right: -8px;
 }
 
+.copy-button--style-title {
+  top: -4px;
+  right: -8px;
+}
+
 .copy-button:hover {
   border-color: rgb(86, 81, 255);
   color: rgb(86, 81, 255);
