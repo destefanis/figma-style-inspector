@@ -1,6 +1,6 @@
 {
   "name": "Inspector",
-  "id": "00000000",
+  "id": "760351147138040099",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html"

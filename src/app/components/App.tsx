@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import "../styles/ui.css";
 import classNames from "classnames";
 import Panel from "./Panel";
-import { node } from "../../../node_modules/@types/prop-types";
 
 declare function require(path: string): any;
 
@@ -15,9 +14,11 @@ const App = ({}) => {
   const [activeNodeIds, setActiveNodeIds] = React.useState([]);
 
   let newWindowFocus = false;
+  let counter = 0;
 
   const onFocus = () => {
     newWindowFocus = true;
+    counter = 0;
   };
 
   const onBlur = () => {
@@ -25,12 +26,12 @@ const App = ({}) => {
     pollForChanges();
   };
 
+  // Recursive function for detecting if the user selects a new layer
+  // polls for up to two minutes.
   function pollForChanges() {
-    let i = 0;
-    i++;
-
-    if (newWindowFocus === false && i < 900) {
+    if (newWindowFocus === false && counter < 600) {
       parent.postMessage({ pluginMessage: { type: "update-selection" } }, "*");
+      counter++;
 
       setTimeout(() => {
         pollForChanges();
@@ -57,7 +58,25 @@ const App = ({}) => {
       // Plugin code returns this message after finished a loop.
       // The data received is serialized so we need to parse it before use.
       if (type === "complete") {
-        setNodeAarray(JSON.parse(message));
+        let nodeObject = JSON.parse(message);
+        setNodeAarray(nodeObject);
+
+        // Fetch the first nodes properties
+        parent.postMessage(
+          { pluginMessage: { type: "fetch-layer-data", id: nodeObject[0].id } },
+          "*"
+        );
+
+        // Set this node as selected in the side menu
+        setSelectedListItem(selectedListItems => {
+          selectedListItems.splice(0, selectedListItems.length);
+          return selectedListItems.concat(nodeObject[0].id);
+        });
+
+        // Expand the item in the side menu
+        setActiveNodeIds(activeNodeIds => {
+          return activeNodeIds.concat(nodeObject[0].id);
+        });
       } else if (type === "fetched layer") {
         setSelectedNode(selectedNode => JSON.parse(message));
       } else if (type === "fetched styles") {
@@ -70,28 +89,6 @@ const App = ({}) => {
   }, []);
 
   function NodeList(props) {
-    // This keeps calling itself.
-    // React.useEffect(() => {
-    //   if (nodeArray.length) {
-
-    //     // Pass the plugin the ID of the layer we want to fetch.
-    //     parent.postMessage(
-    //       { pluginMessage: { type: "fetch-layer-data", id: nodeArray[0].id } },
-    //       "*"
-    //     );
-
-    //     setSelectedListItem(selectedListItems => {
-    //       selectedListItems.splice(0, selectedListItems.length);
-    //       return selectedListItems.concat(nodeArray[0].id);
-    //     });
-
-    //     setActiveNodeIds(activeNodeIds => {
-    //       // Since the ID is not already in the list, we want to add it
-    //       return activeNodeIds.concat(nodeArray[0].id);
-    //     });
-    //   }
-    // }, []);
-
     const handleNodeClick = id => {
       // Pass the plugin the ID of the layer we want to fetch.
       parent.postMessage(

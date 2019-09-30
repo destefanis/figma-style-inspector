@@ -7,7 +7,7 @@ function Placeholder(props) {
       <div className="placeholder-wrapper">
         <img
           className="placeholder-icon"
-          src={require("../assets/placeholder.svg")}
+          src={require("../assets/placeholder-image.png")}
         />
         <h6 className="placeholder-title">Select a layer to inspect</h6>
       </div>
