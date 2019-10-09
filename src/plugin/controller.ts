@@ -127,7 +127,7 @@ figma.ui.onmessage = msg => {
       nodeStyles.push(figma.getStyleById(node.textStyleId));
     }
     if (node.strokeStyleId) {
-      nodeStyles.push(figma.getStyleById(node.textStyleId));
+      nodeStyles.push(figma.getStyleById(node.strokeStyleId));
     }
     if (node.effectStyleId) {
       nodeStyles.push(figma.getStyleById(node.effectStyleId));
