@@ -49,7 +49,7 @@ function PropertiesList(props) {
       </span>
       <button
         onClick={() => {
-          copy(parseKey(obj[objKey], objKey));
+          copy(parseKey(obj[objKey], objKey).replace(/['"]+/g, ""));
           updateCopy();
         }}
         className="copy-button"

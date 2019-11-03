@@ -7,7 +7,7 @@ import Panel from "./Panel";
 declare function require(path: string): any;
 
 const App = ({}) => {
-  const [nodeArray, setNodeAarray] = useState([]);
+  const [nodeArray, setNodeArray] = useState([]);
   const [selectedNode, setSelectedNode] = React.useState({});
   const [selectedNodeStyles, setSelectedNodeStyles] = React.useState([]);
   const [selectedListItems, setSelectedListItem] = React.useState([]);
@@ -59,7 +59,7 @@ const App = ({}) => {
       // The data received is serialized so we need to parse it before use.
       if (type === "complete") {
         let nodeObject = JSON.parse(message);
-        setNodeAarray(nodeObject);
+        setNodeArray(nodeObject);
 
         // Fetch the first nodes properties
         parent.postMessage(

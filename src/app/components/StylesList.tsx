@@ -29,7 +29,7 @@ function StyleListItem(props) {
           <span className="style-name">{style.name}</span>
           <button
             onClick={() => {
-              copy(JSON.stringify(style.name));
+              copy(JSON.stringify(style.name).replace(/['"]+/g, ""));
               updateCopy();
             }}
             className="copy-button copy-button--style-title"
@@ -49,7 +49,7 @@ function StyleListItem(props) {
         <span className="list-item-value">{style.key}</span>
         <button
           onClick={() => {
-            copy(JSON.stringify(style.key));
+            copy(JSON.stringify(style.key).replace(/['"]+/g, ""));
             updateCopy();
           }}
           className="copy-button copy-button--style"
