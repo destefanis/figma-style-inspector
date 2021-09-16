@@ -24,7 +24,7 @@ function PropertiesList(props) {
   function parseKey(obj, key) {
     let newKey = obj;
 
-    if (typeof newKey === "object") {
+    if (typeof newKey === "object" && newKey !== null) {
       if (key === "children") {
         newKey = newKey.length;
       } else if (newKey.name) {

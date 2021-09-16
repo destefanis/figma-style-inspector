@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import "../styles/ui.css";
 import classNames from "classnames";
 import Panel from "./Panel";
